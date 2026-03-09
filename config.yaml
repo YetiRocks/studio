@@ -1,0 +1,29 @@
+name: "Yeti Studio"
+app_id: "studio"
+version: "1.0.0"
+description: "Yeti administration web interface"
+enabled: true
+
+route_prefix: /studio
+require_super_user: true
+
+static_files:
+  path: web
+  route: /
+  index: index.html
+  notFound:
+    file: index.html
+    statusCode: 200
+  build:
+    sourceDir: source
+    command: npm run build
+
+auth:
+  oauth:
+    rules:
+      - strategy: email
+        pattern: "*@yetirocks.com"
+        role: super_user
+      - strategy: provider
+        pattern: "google"
+        role: viewer

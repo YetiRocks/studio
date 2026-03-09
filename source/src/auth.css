@@ -1,0 +1,7 @@
+/* Studio — Auth Dashboard */
+
+.auth-dashboard { padding: var(--space-6); }
+.auth-dashboard h1 { font-size: var(--font-size-xl); color: #fff; margin-bottom: var(--space-4); }
+.stat-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-4); }
+
+/* Auth tables use the shared actions-table pattern from applications.css */

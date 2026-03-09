@@ -1,0 +1,11 @@
+/* Studio — Vectors (Models) */
+
+.models-code { font-size: var(--font-size-xs); color: var(--color-primary); background: none; white-space: nowrap; }
+.models-badge-default { display: block; padding: 2px 8px; font-size: var(--font-size-xs); font-weight: 500; background: none; color: var(--color-success); text-align: center; width: 125px; box-sizing: border-box; }
+.models-actions th.models-col-name,
+.models-actions td.models-col-name { width: 250px; }
+.models-actions th.models-col-fixed,
+.models-actions td.models-col-fixed { width: 125px; text-align: center; }
+.models-actions .col-actions { width: 270px; }
+.models-actions .btn-group .btn { width: 125px; }
+.models-dir-inline { font-size: var(--font-size-xs); color: var(--color-grey); font-family: var(--font-family-mono); }

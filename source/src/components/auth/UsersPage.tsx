@@ -1,0 +1,152 @@
+import { useState, useEffect, useCallback } from 'react'
+import { api, AUTH_BASE } from '../../api'
+import { User, Role } from './types'
+import { UserForm } from './UserForm'
+
+interface UsersPageProps {
+  showToast: (message: string, type: 'success' | 'error') => void
+  triggerNew?: number
+}
+
+export function UsersPage({ showToast, triggerNew }: UsersPageProps) {
+  const [users, setUsers] = useState<User[]>([])
+  const [roles, setRoles] = useState<Role[]>([])
+  const [loading, setLoading] = useState(true)
+  const [showForm, setShowForm] = useState(false)
+  const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (triggerNew && triggerNew > 0) {
+      setEditingUser(null)
+      setShowForm(true)
+    }
+  }, [triggerNew])
+
+  const loadData = useCallback(async () => {
+    try {
+      const [usersData, rolesData] = await Promise.all([
+        api<User[]>(`${AUTH_BASE}/users`),
+        api<Role[]>(`${AUTH_BASE}/roles`),
+      ])
+      setUsers(usersData)
+      setRoles(rolesData)
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to load data', 'error')
+    } finally {
+      setLoading(false)
+    }
+  }, [showToast])
+
+  useEffect(() => { loadData() }, [loadData])
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return
+    try {
+      await api(`${AUTH_BASE}/users/${encodeURIComponent(deleteTarget)}`, { method: 'DELETE' })
+      showToast(`User "${deleteTarget}" deleted`, 'success')
+      setDeleteTarget(null)
+      loadData()
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Delete failed', 'error')
+      setDeleteTarget(null)
+    }
+  }
+
+  const handleSave = async (data: Partial<User>) => {
+    try {
+      if (editingUser) {
+        await api(`${AUTH_BASE}/users/${encodeURIComponent(editingUser.username)}`, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+        })
+        showToast(`User "${editingUser.username}" updated`, 'success')
+      } else {
+        await api(`${AUTH_BASE}/users`, {
+          method: 'POST',
+          body: JSON.stringify(data),
+        })
+        showToast(`User "${data.username}" created`, 'success')
+      }
+      setShowForm(false)
+      setEditingUser(null)
+      loadData()
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Save failed', 'error')
+    }
+  }
+
+  if (loading) return <div className="page-body empty-state">Loading...</div>
+
+  return (
+    <>
+      {users.length === 0 ? (
+        <div className="empty-state">No users found</div>
+      ) : (
+        <table className="data-table actions-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th className="col-actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.username}>
+                <td>{user.username}</td>
+                <td>{user.email || '-'}</td>
+                <td>{user.roleId}</td>
+                <td>
+                  <span className={`badge ${user.active !== false ? 'badge-success' : 'badge-error'}`}>
+                    {user.active !== false ? 'Active' : 'Inactive'}
+                  </span>
+                </td>
+                <td className="col-actions">
+                  <div className="btn-group">
+                    <button
+                      className="btn btn-sm"
+                      onClick={() => { setEditingUser(user); setShowForm(true) }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-sm"
+                      onClick={() => setDeleteTarget(user.username)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {deleteTarget && (
+        <div className="modal-overlay" onClick={() => setDeleteTarget(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h2 className="modal-title">Delete User?</h2>
+            <p className="modal-message">Are you sure you want to delete "{deleteTarget}"? This cannot be undone.</p>
+            <div className="modal-actions">
+              <button className="btn" onClick={() => setDeleteTarget(null)}>Cancel</button>
+              <button className="btn btn-primary" onClick={handleDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showForm && (
+        <UserForm
+          user={editingUser}
+          roles={roles}
+          onSave={handleSave}
+          onCancel={() => { setShowForm(false); setEditingUser(null) }}
+        />
+      )}
+    </>
+  )
+}
