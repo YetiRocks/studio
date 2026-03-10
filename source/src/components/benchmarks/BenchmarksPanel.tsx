@@ -351,7 +351,7 @@ export default function BenchmarksPanel() {
             <p className="modal-message">This will permanently delete all benchmark results across every test. This cannot be undone.</p>
             <div className="modal-actions">
               <button className="btn" disabled={deleting} onClick={() => setShowDeleteAll(false)}>Cancel</button>
-              <button className="btn btn-delete" disabled={deleting} onClick={deleteAllResults}>
+              <button className="btn btn-primary" disabled={deleting} onClick={deleteAllResults}>
                 {deleting ? 'Deleting...' : 'Delete All'}
               </button>
             </div>
