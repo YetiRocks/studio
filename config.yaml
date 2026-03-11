@@ -1,4 +1,4 @@
-name: "Yeti Studio"
+1name: "Yeti Studio"
 app_id: "studio"
 version: "1.0.0"
 description: "Yeti administration web interface"
@@ -19,6 +19,10 @@ static_files:
     command: npm run build
 
 auth:
+  jwt:
+    secret: "${JWT_SECRET}"
+    accessTtl: 900
+    refreshTtl: 604800
   oauth:
     rules:
       - strategy: email
