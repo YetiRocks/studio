@@ -8,17 +8,21 @@ export const Route = createRootRoute({
 })
 
 function LoginPage({ onLogin }: { onLogin: () => void }) {
-  const [providers, setProviders] = useState<string[] | null>(null)
+  const [methods, setMethods] = useState<string[] | null>(null)
+  const [providers, setProviders] = useState<string[]>([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
-    fetch(`${AUTH_BASE}/oauth_providers`, { credentials: 'same-origin' })
-      .then(r => r.ok ? r.json() : { providers: [] })
-      .then(data => setProviders((data.providers || []).map((p: { name: string }) => p.name)))
-      .catch(() => setProviders([]))
+    fetch(`${AUTH_BASE}/oauth_providers?app_id=studio`, { credentials: 'same-origin' })
+      .then(r => r.ok ? r.json() : { providers: [], methods: [] })
+      .then(data => {
+        setProviders((data.providers || []).map((p: { name: string }) => p.name))
+        setMethods(data.methods || ['basic', 'oauth'])
+      })
+      .catch(() => { setProviders([]); setMethods(['basic']) })
   }, [])
 
   const handleOAuthLogin = (provider: string) => {
@@ -49,17 +53,18 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
     }
   }
 
-  if (providers === null) {
+  if (methods === null) {
     return <div className="loading">Loading...</div>
   }
 
-  const hasOAuth = providers.length > 0
+  const showOAuth = methods.includes('oauth') && providers.length > 0
+  const showPassword = methods.includes('basic') || methods.includes('jwt')
 
   return (
     <div className="login-page">
       <div className="login-card">
         <img src={`${import.meta.env.BASE_URL}logo_white.svg`} alt="Yeti" className="login-logo" />
-        {hasOAuth ? (
+        {showOAuth && (
           <>
             {providers.includes('google') && (
               <button className="btn btn-oauth btn-google" onClick={() => handleOAuthLogin('google')}>
@@ -78,7 +83,11 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
               </button>
             ))}
           </>
-        ) : (
+        )}
+        {showOAuth && showPassword && (
+          <div className="login-divider"><span>or sign in with password</span></div>
+        )}
+        {showPassword && (
           <form onSubmit={handlePasswordLogin}>
             <input
               type="text"
@@ -86,7 +95,7 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
               value={username}
               onChange={e => setUsername(e.target.value)}
               autoComplete="username"
-              autoFocus
+              autoFocus={!showOAuth}
             />
             <input
               type="password"

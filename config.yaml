@@ -1,10 +1,8 @@
-1name: "Yeti Studio"
+name: "Yeti Studio"
 app_id: "studio"
 version: "1.0.0"
 description: "Yeti administration web interface"
 enabled: true
-
-route_prefix: /studio
 require_super_user: true
 
 static_files:
@@ -19,15 +17,12 @@ static_files:
     command: npm run build
 
 auth:
-  jwt:
-    secret: "${JWT_SECRET}"
-    accessTtl: 900
-    refreshTtl: 604800
+  methods: [oauth, jwt]
   oauth:
+    google:
+      clientId: "${GOOGLE_CLIENT_ID}"
+      clientSecret: "${GOOGLE_CLIENT_SECRET}"
     rules:
       - strategy: email
         pattern: "*@yetirocks.com"
         role: super_user
-      - strategy: provider
-        pattern: "google"
-        role: viewer

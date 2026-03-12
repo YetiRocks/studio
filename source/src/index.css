@@ -801,12 +801,13 @@ code {
 .login-card form { display: flex; flex-direction: column; gap: var(--space-3); width: 100%; }
 .login-card input { padding: var(--space-3); background: rgba(0, 0, 0, 0.3); color: var(--color-white); border: 1px solid var(--color-border-primary); border-radius: var(--radius-sm); font-family: var(--font-family-base); font-size: var(--font-size-sm); outline: none; }
 .login-card input:focus { border-color: var(--color-grey); }
-.login-card button[type="submit"] { padding: var(--space-3); margin-top: 1rem; background: color-mix(in srgb, var(--color-primary) 15%, transparent); border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-family-base); font-size: var(--font-size-sm); cursor: pointer; transition: all var(--transition-fast); }
-.login-card button[type="submit"]:hover:not(:disabled) { background: color-mix(in srgb, var(--color-primary) 25%, transparent); border-color: color-mix(in srgb, var(--color-primary) 40%, transparent); }
-.login-card button[type="submit"]:disabled { opacity: 0.4; cursor: default; }
+.login-card button[type="submit"] { padding: var(--space-3); margin-top: 1rem; background: var(--color-primary); border: 1px solid var(--color-primary); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-family-base); font-size: var(--font-size-sm); cursor: pointer; transition: all var(--transition-fast); }
+.login-card button[type="submit"]:disabled { cursor: default; }
 .login-error { color: var(--color-error); font-size: var(--font-size-sm); text-align: center; }
 .login-card .btn-oauth { justify-content: center; width: 100%; padding: var(--space-3) var(--space-4); background: rgba(36, 41, 46, 0.5); border-color: var(--color-border-primary); color: var(--color-white); }
 .login-card .btn-oauth:hover { background: var(--color-white-overlay); transform: translateY(-1px); }
+.login-divider { display: flex; align-items: center; gap: var(--space-3); width: 100%; color: var(--color-grey); font-size: var(--font-size-xs); }
+.login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: var(--color-border-primary); }
 .loading { display: flex; align-items: center; justify-content: center; height: 100vh; color: var(--color-grey); }
 
 /* ── Toast ── */
