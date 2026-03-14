@@ -1,5 +1,6 @@
 import { createRootRoute, Outlet, Link, useRouter } from '@tanstack/react-router'
 import { useState, useEffect, useCallback, FormEvent } from 'react'
+import '../theme'
 import { useToast } from '../hooks/useToast'
 import { APPS_BASE, AUTH_BASE, setSessionExpiredHandler } from '../api'
 

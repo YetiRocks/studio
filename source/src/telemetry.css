@@ -70,7 +70,8 @@
 
 /* ── Metrics ── */
 .metrics-grid { flex: 1; overflow-y: auto; padding: var(--space-4); display: grid; grid-template-columns: repeat(auto-fill, minmax(max(180px, calc(100%/6 - var(--space-4)*5/6)), 1fr)); gap: var(--space-4); align-content: start; }
-.metric-card { padding: var(--space-4); background: var(--color-white-overlay); border: 1px solid var(--color-border-primary); border-radius: var(--radius-md); }
+.metric-card { padding: var(--space-4); background: var(--color-black-overlay); cursor: default; border: none; border-radius: var(--radius-md); }
+.metric-card:hover { background: var(--color-black-overlay); border: none; }
 .metric-name { font-size: var(--font-size-xs); color: var(--color-primary); margin-bottom: var(--space-1); font-family: var(--font-family-mono); }
 .metric-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-white); }
 .metric-unit { font-size: var(--font-size-sm); color: var(--color-grey); margin-left: var(--space-1); }

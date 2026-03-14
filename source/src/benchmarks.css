@@ -8,7 +8,8 @@
 .bench-section-label { font-size: var(--font-size-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-white); margin-bottom: var(--space-1); }
 .bench-section-desc { font-size: var(--font-size-xs); color: var(--color-grey); }
 .bench-error { padding: var(--space-2) var(--space-4); margin-bottom: var(--space-4); background: rgba(187, 33, 36, 0.15); border: 1px solid var(--color-error); border-radius: var(--radius-sm); color: var(--color-error); font-size: var(--font-size-sm); }
-.bench-card { cursor: pointer; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); display: flex; flex-direction: column; gap: var(--space-3); background: var(--color-black-overlay); }
+.bench-card { cursor: pointer; display: flex; flex-direction: column; gap: var(--space-3); background: var(--color-black-overlay); border: none; }
+.bench-card:hover { border: none; }
 .bench-card.bench-disabled { opacity: 0.5; }
 .bench-card-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
 .bench-card-header .metric-name { margin-bottom: 0; color: #fff; font-weight: 600; }
@@ -29,7 +30,7 @@
 .bench-history-btn { background: none; border: 1px solid var(--color-border-primary); border-radius: var(--radius-sm); color: var(--color-grey); cursor: pointer; padding: 4px 6px; display: flex; align-items: center; transition: color var(--transition-fast), border-color var(--transition-fast); }
 .bench-history-btn:hover { color: var(--color-white); border-color: transparent; }
 .bench-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(2px); }
-.bench-modal { background: var(--color-bg-primary, #111); border: 1px solid var(--color-border-primary); border-radius: var(--radius-md); width: min(90vw, 800px); max-height: 80vh; display: flex; flex-direction: column; }
+.bench-modal { background: var(--color-black-overlay); border: none; border-radius: var(--radius-md); width: min(90vw, 800px); max-height: 80vh; display: flex; flex-direction: column; }
 .bench-modal-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4); border-bottom: 1px solid var(--color-border-primary); }
 .bench-modal-title { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-white); }
 .bench-modal-close { background: none; border: none; color: var(--color-grey); font-size: var(--font-size-xl); cursor: pointer; padding: 0 var(--space-2); line-height: 1; }
